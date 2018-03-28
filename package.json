@@ -9,6 +9,7 @@
     "build:development": "cross-env RAILS_ENV=development ./bin/webpack",
     "build:production": "cross-env RAILS_ENV=production ./bin/webpack",
     "manage:translations": "node ./config/webpack/translationRunner.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack/development.js --progress --color",
     "start": "node ./streaming/index.js",
     "test": "npm-run-all test:lint test:jest",
     "test:lint": "eslint -c .eslintrc.yml --ext=js app/javascript/ config/webpack/ streaming/",

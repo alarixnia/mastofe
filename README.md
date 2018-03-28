@@ -1,98 +1,74 @@
-![Mastodon](https://i.imgur.com/NhZc40l.png)
-========
+# Mastodon Tootsuite / mastofe repository
 
-[![Build Status](https://img.shields.io/circleci/project/github/tootsuite/mastodon.svg)][circleci]
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/tootsuite/mastodon.svg)][code_climate]
-[![Translation status](https://weblate.joinmastodon.org/widgets/mastodon/-/svg-badge.svg)][weblate]
+Here is a fork of mastodon. We could really just remove all of the code except
+for the frontend, but to easily pull the upstream repo we'll just keep
+everything. This is my fork for the moment with the idea of making the mastofe
+just as polished as the pleromafe. If you want to get access, open an issue or
+hit me up at howl@social.zxq.co.
 
-[circleci]: https://circleci.com/gh/tootsuite/mastodon
-[code_climate]: https://codeclimate.com/github/tootsuite/mastodon
-[weblate]: https://weblate.joinmastodon.org/engage/mastodon/
+# Development
 
-Mastodon is a **free, open-source social network server** based on **open web protocols** like ActivityPub and OStatus. The social focus of the project is a viable decentralized alternative to commercial social media silos that returns the control of the content distribution channels to the people. The technical focus of the project is a good user interface, a clean REST API for 3rd party apps and robust anti-abuse tools.
+I use a combination of the pleroma backend + yarn + nginx to do local
+development. I refuse to install Ruby. Here's how to get it running on your own
+machine:
 
-Click on the screenshot below to watch a demo of the UI:
+## Install yarn
 
-[![Screenshot](https://i.imgur.com/qrNOiSp.png)][youtube_demo]
+Yarn will be needed to set up the mastodon frontend for development. Check out
+https://yarnpkg.com/lang/en/docs/install/ . For Debian, it's like this:
 
-[youtube_demo]: https://www.youtube.com/watch?v=IPSbNdBmWKE
+```sh
+# import yarn pub key and repo
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update
+sudo apt-get install yarn
+```
 
-**Ruby on Rails** is used for the back-end, while **React.js** and Redux are used for the dynamic front-end. A static front-end for public resources (profiles and statuses) is also provided.
+## Mastodon Frontend Setup
 
-If you would like, you can [support the development of this project on Patreon][patreon].
+```sh
+# Install dependencies
+yarn install -D
+npm run dev
+# check that http://localhost:3035/packs/common.css works in your browser once
+# webpack is done compiling. if css shows up, then it should have worked!
+```
 
-[patreon]: https://www.patreon.com/mastodon
+## nginx setup
 
----
+I'll assume that you have already fired up pleroma using the installation guide.
+To work on the frontend while still having the backend up, use this nginx
+config.
 
-## Resources
+```
+server {
+    listen 80;
+    server_name pleroma.testing;
 
-- [Quick start guide](https://blog.joinmastodon.org/2018/08/mastodon-quick-start-guide/)
-- [Find Twitter friends on Mastodon](https://bridge.joinmastodon.org)
-- [API overview](https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md)
-- [Documentation](https://github.com/tootsuite/documentation)
-- [List of servers](https://joinmastodon.org/#getting-started)
-- [List of apps](https://joinmastodon.org/apps)
-- [List of sponsors](https://joinmastodon.org/sponsors)
+    location /packs {
+        add_header 'Access-Control-Allow-Origin' '*';
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
 
-## Features
+        proxy_pass http://localhost:3035;
+    }
 
-**No vendor lock-in: Fully interoperable with any conforming platform**
+    location / {
+        add_header 'Access-Control-Allow-Origin' '*';
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
 
-It doesn't have to be Mastodon, whatever implements ActivityPub or OStatus is part of the social network!
+        proxy_pass http://localhost:4000;
+    }
+}
+```
 
-**Real-time timeline updates**
+Change the `server_name` if you like. I personally like to create a new entry
+in /etc/hosts and add `127.0.0.1 pleroma.testing`, but you do what suits you.
 
-See the updates of people you're following appear in real-time in the UI via WebSockets. There's a firehose view as well!
-
-**Federated thread resolving**
-
-If someone you follow replies to a user unknown to the server, the server fetches the full thread so you can view it without leaving the UI
-
-**Media attachments like images and short videos**
-
-Upload and view images and WebM/MP4 videos attached to the updates. Videos with no audio track are treated like GIFs; normal videos are looped - like vines!
-
-**OAuth2 and a straightforward REST API**
-
-Mastodon acts as an OAuth2 provider so 3rd party apps can use the API
-
-**Fast response times**
-
-Mastodon tries to be as fast and responsive as possible, so all long-running tasks are delegated to background processing
-
-**Deployable via Docker**
-
-You don't need to mess with dependencies and configuration if you want to try Mastodon, if you have Docker and Docker Compose the deployment is extremely easy
-
----
-
-## Development
-
-Please follow the [development guide](https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Development-guide.md) from the documentation repository.
-
-## Deployment
-
-There are guides in the documentation repository for [deploying on various platforms](https://github.com/tootsuite/documentation#running-mastodon).
-
-## Contributing
-
-You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository. [Here are the guidelines for code contributions](CONTRIBUTING.md)
-
-**IRC channel**: #mastodon on irc.freenode.net
-
-## License
-
-Copyright (C) 2016-2018 Eugen Rochko & other Mastodon contributors (see AUTHORS.md)
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
-
----
-
-## Extra credits
-
-The elephant friend illustrations are created by [Dopatwo](https://mastodon.social/@dopatwo)
+If you have enough luck, navigating to your \<server\_name\>/web should show
+you the mastodon frontend, and should also work with all the nice things of
+webpack such as hot reloading. Have fun!
