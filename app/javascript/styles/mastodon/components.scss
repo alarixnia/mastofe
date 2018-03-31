@@ -667,7 +667,7 @@
   }
 
   a {
-    color: $secondary-text-color;
+    color: $pleroma-links;
     text-decoration: none;
 
     &:hover {
@@ -1815,6 +1815,8 @@ a.account__display-name {
 
   > .scrollable {
     background: $ui-base-color;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
 }
 
@@ -1828,7 +1830,7 @@ a.account__display-name {
 }
 
 .drawer {
-  width: 300px;
+  width: 330px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1897,7 +1899,7 @@ a.account__display-name {
 
   .column,
   .drawer {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     padding: 10px;
     padding-left: 5px;
     padding-right: 5px;
@@ -1942,6 +1944,7 @@ a.account__display-name {
   overflow-y: auto;
   width: 100%;
   height: 100%;
+  border-radius: 2px;
 
   &.darker {
     background: $ui-base-color;
@@ -1978,6 +1981,7 @@ a.account__display-name {
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
+  border-radius: 2px;
 
   a {
     transition: background 100ms ease-in;
@@ -2679,6 +2683,8 @@ a.status-card {
   z-index: 2;
   outline: 0;
   overflow: hidden;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 
   & > button {
     margin: 0;
@@ -3435,6 +3441,7 @@ a.status-card {
   color: $darker-text-color;
   font-size: 14px;
   margin: 0;
+  border-radius: 2px;
 
   &::-moz-focus-inner {
     border: 0;
