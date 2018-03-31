@@ -4,7 +4,6 @@ const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const sharedConfig = require('./shared.js');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const OfflinePlugin = require('offline-plugin');
 const { publicPath } = require('./configuration.js');
 const path = require('path');
@@ -72,16 +71,6 @@ module.exports = merge(sharedConfig, {
       asset: '[path].gz[query]',
       algorithm: compressionAlgorithm,
       test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
-    }),
-    new BundleAnalyzerPlugin({ // generates report.html and stats.json
-      analyzerMode: 'static',
-      generateStatsFile: true,
-      statsOptions: {
-        // allows usage with http://chrisbateman.github.io/webpack-visualizer/
-        chunkModules: true,
-      },
-      openAnalyzer: false,
-      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
     }),
     new OfflinePlugin({
       publicPath: publicPath, // sw.js must be served from the root to avoid scope issues

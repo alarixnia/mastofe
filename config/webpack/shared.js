@@ -73,7 +73,7 @@ module.exports = {
       }
     ),
     new MiniCssExtractPlugin({
-      filename: env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css',
+      filename: '[name].css',
     }),
     new ManifestPlugin({
       publicPath: output.publicPath,
