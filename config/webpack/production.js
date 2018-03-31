@@ -62,16 +62,6 @@ module.exports = merge(sharedConfig, {
       algorithm: compressionAlgorithm,
       test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
     }),
-    new BundleAnalyzerPlugin({ // generates report.html and stats.json
-      analyzerMode: 'static',
-      generateStatsFile: true,
-      statsOptions: {
-        // allows usage with http://chrisbateman.github.io/webpack-visualizer/
-        chunkModules: true,
-      },
-      openAnalyzer: false,
-      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
-    }),
     new OfflinePlugin({
       publicPath: publicPath, // sw.js must be served from the root to avoid scope issues
       caches: {
