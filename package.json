@@ -6,8 +6,9 @@
   },
   "scripts": {
     "postversion": "git push --tags",
-    "build:development": "cross-env RAILS_ENV=development ./bin/webpack",
-    "build:production": "cross-env RAILS_ENV=production ./bin/webpack",
+    "build:development": "cross-env NODE_ENV=development webpack --config config/webpack/development.js --progress --color",
+    "build:production": "cross-env NODE_ENV=production webpack --config config/webpack/production.js --progress --color",
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack/production.js --progress --color",
     "manage:translations": "node ./config/webpack/translationRunner.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack/development.js --progress --color",
     "start": "node ./streaming/index.js",
