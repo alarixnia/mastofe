@@ -2,22 +2,11 @@
 
 const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const sharedConfig = require('./shared.js');
 const OfflinePlugin = require('offline-plugin');
 const { publicPath } = require('./configuration.js');
 const path = require('path');
 const { URL } = require('url');
-
-let compressionAlgorithm;
-try {
-  const zopfli = require('node-zopfli');
-  compressionAlgorithm = (content, options, fn) => {
-    zopfli.gzip(content, options, fn);
-  };
-} catch (error) {
-  compressionAlgorithm = 'gzip';
-}
 
 let attachmentHost;
 
@@ -38,8 +27,8 @@ module.exports = merge(sharedConfig, {
   mode: 'production',
 
   output: {
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
   },
 
   devtool: 'source-map', // separate sourcemap file, suitable for production
@@ -67,11 +56,6 @@ module.exports = merge(sharedConfig, {
   },
 
   plugins: [
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: compressionAlgorithm,
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
-    }),
     new OfflinePlugin({
       publicPath: publicPath, // sw.js must be served from the root to avoid scope issues
       caches: {
@@ -95,7 +79,6 @@ module.exports = merge(sharedConfig, {
         '/emoji/sheet_10.png', // used in emoji-mart
       ],
       excludes: [
-        '**/*.gz',
         '**/*.map',
         'stats.json',
         'report.html',
