@@ -10,7 +10,7 @@ function openWebCache() {
 }
 
 function fetchRoot() {
-  return fetch('/', { credentials: 'include', redirect: 'manual' });
+  return fetch('/web', { credentials: 'include', redirect: 'manual' });
 }
 
 // const firefox = navigator.userAgent.match(/Firefox\/(\d+)/);
@@ -19,7 +19,7 @@ function fetchRoot() {
 // Cause a new version of a registered Service Worker to replace an existing one
 // that is already installed, and replace the currently active worker on open pages.
 self.addEventListener('install', function(event) {
-  event.waitUntil(Promise.all([openWebCache(), fetchRoot()]).then(([cache, root]) => cache.put('/', root)));
+  event.waitUntil(Promise.all([openWebCache(), fetchRoot()]).then(([cache, root]) => cache.put('/web', root)));
 });
 self.addEventListener('activate', function(event) {
   event.waitUntil(self.clients.claim());
@@ -27,17 +27,17 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   const url = new URL(event.request.url);
 
-  if (url.pathname.startsWith('/web/')) {
+  if (url.pathname.startsWith('/web')) {
     const asyncResponse = fetchRoot();
     const asyncCache = openWebCache();
 
     event.respondWith(asyncResponse.then(
       response => {
         const clonedResponse = response.clone();
-        asyncCache.then(cache => cache.put('/', clonedResponse)).catch();
+        asyncCache.then(cache => cache.put('/web', clonedResponse)).catch();
         return response;
       },
-      () => asyncCache.then(cache => cache.match('/'))));
+      () => asyncCache.then(cache => cache.match('/web'))));
   } else if (url.pathname === '/auth/sign_out') {
     const asyncResponse = fetch(event.request);
     const asyncCache = openWebCache();
@@ -45,7 +45,7 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(asyncResponse.then(response => {
       if (response.ok || response.type === 'opaqueredirect') {
         return Promise.all([
-          asyncCache.then(cache => cache.delete('/')),
+          asyncCache.then(cache => cache.delete('/web')),
           indexedDB.deleteDatabase('mastodon'),
         ]).then(() => response);
       }
