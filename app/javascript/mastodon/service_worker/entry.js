@@ -28,6 +28,10 @@ self.addEventListener('fetch', function(event) {
   const url = new URL(event.request.url);
 
   if (url.pathname.startsWith('/web')) {
+    // we always make /web/login go through
+    if (url.pathname.startsWith('/web/login')) {
+      return;
+    }
     const asyncResponse = fetchRoot();
     const asyncCache = openWebCache();
 
