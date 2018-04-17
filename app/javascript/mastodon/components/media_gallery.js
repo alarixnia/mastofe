@@ -146,6 +146,19 @@ class Item extends React.PureComponent {
           />
         </a>
       );
+    } else if (attachment.get('type') === 'audio') {
+      thumbnail = (
+        <div className='media-gallery__audio'>
+          <audio
+            className='media-gallery__item-audio-thumbnail'
+            aria-label={attachment.get('description')}
+            role='application'
+            src={attachment.get('url')}
+            loop
+            controls
+          />
+        </div>
+        );
     } else if (attachment.get('type') === 'gifv') {
       const autoPlay = !isIOS() && autoPlayGif;
 
