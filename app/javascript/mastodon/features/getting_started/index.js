@@ -9,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { me, invitesEnabled } from '../../initial_state';
 import { fetchFollowRequests } from '../../actions/accounts';
+import { fetchPanel, fetchPleromaConfig } from '../../actions/pleroma';
 import { List as ImmutableList } from 'immutable';
 import { Link } from 'react-router-dom';
 import NavigationBar from '../compose/components/navigation_bar';
@@ -36,10 +37,14 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   myAccount: state.getIn(['accounts', me]),
   unreadFollowRequests: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
+  customPanelEnabled: state.getIn(['custom_panel', 'enabled']),
+  customPanel: state.getIn(['custom_panel', 'panel']),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchFollowRequests: () => dispatch(fetchFollowRequests()),
+  fetchPanel: () => dispatch(fetchPanel()),
+  fetchPleromaConfig: () => dispatch(fetchPleromaConfig()),
 });
 
 const badgeDisplay = (number, limit) => {
@@ -62,20 +67,27 @@ export default class GettingStarted extends ImmutablePureComponent {
     columns: ImmutablePropTypes.list,
     multiColumn: PropTypes.bool,
     fetchFollowRequests: PropTypes.func.isRequired,
+    fetchPanel: PropTypes.func.isRequired,
+    fetchPleromaConfig: PropTypes.func.isRequired,
     unreadFollowRequests: PropTypes.number,
     unreadNotifications: PropTypes.number,
+    customPanelEnabled: PropTypes.bool,
+    customPanel: PropTypes.string.isRequired,
   };
 
   componentDidMount () {
-    const { myAccount, fetchFollowRequests } = this.props;
+    const { myAccount, fetchFollowRequests, fetchPleromaConfig, fetchPanel } = this.props;
 
     if (myAccount.get('locked')) {
       fetchFollowRequests();
     }
+
+    fetchPleromaConfig();
+    fetchPanel();
   }
 
   render () {
-    const { intl, myAccount, multiColumn, unreadFollowRequests } = this.props;
+    const { intl, myAccount, multiColumn, unreadFollowRequests, customPanelEnabled, customPanel } = this.props;
 
     const navItems = [];
     let i = 1;
@@ -115,6 +127,19 @@ export default class GettingStarted extends ImmutablePureComponent {
       height += 34 + 48*2;
     }
 
+    const dot = ' • ';
+    const staticContent = (customPanelEnabled ? <div dangerouslySetInnerHTML={{__html: customPanel}} style={{marginLeft: -12, marginRight: -12}} /> :
+      <p>
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/FAQ.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.faq' defaultMessage='FAQ' /></a>
+        {dot}
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/User-guide.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.userguide' defaultMessage='User Guide' /></a>
+        {dot}
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.appsshort' defaultMessage='Apps' /></a>
+        {dot}
+        <a href='https://pleroma.social'><FormattedMessage id='getting_started.pleroma' defaultMessage='Pleroma' /></a>
+      </p>
+    );
+
     return (
       <Column>
         {multiColumn && <div className='column-header__wrapper'>
@@ -153,6 +178,8 @@ export default class GettingStarted extends ImmutablePureComponent {
               values={{ github: <a href='https://github.com/tootsuite/mastodon' rel='noopener' target='_blank'>tootsuite/mastodon</a> }}
             />
           </p>
+
+          {staticContent}
         </div>
       </Column>
     );
