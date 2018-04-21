@@ -1857,10 +1857,18 @@ a.account__display-name {
     margin-bottom: 0;
   }
 
-  .getting-started__wrapper,
   .getting-started__trends,
   .search {
     margin-bottom: 10px;
+  }
+
+  .getting-started__panel {
+    margin: 10px 0;
+  }
+
+  .column,
+  .drawer {
+    min-width: 330px;
   }
 }
 
@@ -2268,21 +2276,27 @@ a.account__display-name {
   background: $ui-base-color;
 }
 
-.getting-started__wrapper {
-  flex: 0 0 auto;
-}
-
 .flex-spacer {
   flex: 1 1 auto;
 }
 
 .getting-started {
   color: $dark-text-color;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 
+  &__wrapper,
+  &__panel,
   &__footer {
-    flex: 0 0 auto;
+    height: min-content;
+  }
+
+  &__panel,
+  &__footer
+  {
     padding: 10px;
     padding-top: 20px;
+    flex-grow: 0;
 
     ul {
       margin-bottom: 10px;
@@ -2293,9 +2307,7 @@ a.account__display-name {
     }
 
     p {
-      color: $dark-text-color;
       font-size: 13px;
-      margin-bottom: 20px;
 
       a {
         color: $dark-text-color;
@@ -2313,6 +2325,12 @@ a.account__display-name {
         text-decoration: underline;
       }
     }
+  }
+
+  &__wrapper,
+  &__footer
+  {
+    color: $dark-text-color;
   }
 
   &__trends {

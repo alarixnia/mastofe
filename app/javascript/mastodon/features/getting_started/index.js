@@ -9,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { me, invitesEnabled, version } from '../../initial_state';
 import { fetchFollowRequests } from '../../actions/accounts';
+import { fetchPanel, fetchPleromaConfig } from '../../actions/pleroma';
 import { List as ImmutableList } from 'immutable';
 import { Link } from 'react-router-dom';
 import NavigationBar from '../compose/components/navigation_bar';
@@ -37,10 +38,14 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   myAccount: state.getIn(['accounts', me]),
   unreadFollowRequests: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
+  customPanelEnabled: state.getIn(['custom_panel', 'enabled']),
+  customPanel: state.getIn(['custom_panel', 'panel']),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchFollowRequests: () => dispatch(fetchFollowRequests()),
+  fetchPanel: () => dispatch(fetchPanel()),
+  fetchPleromaConfig: () => dispatch(fetchPleromaConfig()),
 });
 
 const badgeDisplay = (number, limit) => {
@@ -63,20 +68,27 @@ export default class GettingStarted extends ImmutablePureComponent {
     columns: ImmutablePropTypes.list,
     multiColumn: PropTypes.bool,
     fetchFollowRequests: PropTypes.func.isRequired,
+    fetchPanel: PropTypes.func.isRequired,
+    fetchPleromaConfig: PropTypes.func.isRequired,
     unreadFollowRequests: PropTypes.number,
     unreadNotifications: PropTypes.number,
+    customPanelEnabled: PropTypes.bool,
+    customPanel: PropTypes.string.isRequired,
   };
 
   componentDidMount () {
-    const { myAccount, fetchFollowRequests } = this.props;
+    const { myAccount, fetchFollowRequests, fetchPleromaConfig, fetchPanel } = this.props;
 
     if (myAccount.get('locked')) {
       fetchFollowRequests();
     }
+
+    fetchPleromaConfig();
+    fetchPanel();
   }
 
   render () {
-    const { intl, myAccount, multiColumn, unreadFollowRequests } = this.props;
+    const { intl, myAccount, multiColumn, unreadFollowRequests, customPanelEnabled, customPanel } = this.props;
 
     const navItems = [];
     let i = 1;
@@ -109,11 +121,24 @@ export default class GettingStarted extends ImmutablePureComponent {
     if (!multiColumn) {
       navItems.push(
         <ColumnSubheading key={i++} text={intl.formatMessage(messages.settings_subheading)} />,
-        <ColumnLink key={i++} icon='gears' text={intl.formatMessage(messages.preferences)} href='/settings/preferences' />,
+        <ColumnLink key={i++} icon='gears' text={intl.formatMessage(messages.preferences)} href='/user-settings' />,
       );
 
       height += 34 + 48;
     }
+
+    const dot = ' • ';
+    const staticContent = (customPanelEnabled ? <div dangerouslySetInnerHTML={{__html: customPanel}} style={{marginLeft: -12, marginRight: -12}} /> :
+      <p>
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/FAQ.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.faq' defaultMessage='FAQ' /></a>
+        {dot}
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/User-guide.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.userguide' defaultMessage='User Guide' /></a>
+        {dot}
+        <a href='https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md' rel='noopener' target='_blank'><FormattedMessage id='getting_started.appsshort' defaultMessage='Apps' /></a>
+        {dot}
+        <a href='https://pleroma.social'><FormattedMessage id='getting_started.pleroma' defaultMessage='Pleroma' /></a>
+      </p>
+    );
 
     return (
       <Column label={intl.formatMessage(messages.menu)}>
@@ -126,36 +151,33 @@ export default class GettingStarted extends ImmutablePureComponent {
           </h1>
         </div>}
 
-        <div className='getting-started'>
-          <div className='getting-started__wrapper' style={{ height }}>
-            {!multiColumn && <NavigationBar account={myAccount} />}
-            {navItems}
-          </div>
+        <div className='getting-started__wrapper scrollable' style={{ height }}>
+          {!multiColumn && <NavigationBar account={myAccount} />}
+          {navItems}
+        </div>
 
-          {!multiColumn && <div className='flex-spacer' />}
+        {!multiColumn && <div className='flex-spacer' />}
 
-          <div className='getting-started__footer'>
-            <ul>
-              <li><a href='https://bridge.joinmastodon.org/' target='_blank'><FormattedMessage id='getting_started.find_friends' defaultMessage='Find friends from Twitter' /></a> · </li>
-              {invitesEnabled && <li><a href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
-              {multiColumn && <li><Link to='/keyboard-shortcuts'><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></Link> · </li>}
-              <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>
-              <li><a href='/about/more' target='_blank'><FormattedMessage id='navigation_bar.info' defaultMessage='About this instance' /></a> · </li>
-              <li><a href='https://joinmastodon.org/apps' target='_blank'><FormattedMessage id='navigation_bar.apps' defaultMessage='Mobile apps' /></a> · </li>
-              <li><a href='/terms' target='_blank'><FormattedMessage id='getting_started.terms' defaultMessage='Terms of service' /></a> · </li>
-              <li><a href='/settings/applications' target='_blank'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li>
-              <li><a href='https://github.com/tootsuite/documentation#documentation' target='_blank'><FormattedMessage id='getting_started.documentation' defaultMessage='Documentation' /></a> · </li>
-              <li><a href='/auth/sign_out' data-method='delete'><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a></li>
-            </ul>
+        <div className='getting-started getting-started__panel scrollable'>
+          {staticContent}
+        </div>
 
-            <p>
-              <FormattedMessage
-                id='getting_started.open_source_notice'
-                defaultMessage='Mastodon is open source software. You can contribute or report issues on GitHub at {github}.'
-                values={{ github: <span><a href='https://github.com/tootsuite/mastodon' rel='noopener' target='_blank'>tootsuite/mastodon</a> (v{version})</span> }}
-              />
-            </p>
-          </div>
+        {!multiColumn && <div className='flex-spacer' />}
+
+        <div className='getting-started__footer scrollable'>
+          <ul>
+            {invitesEnabled && <li><a href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
+            {multiColumn && <li><Link to='/keyboard-shortcuts'><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></Link> · </li>}
+            <li><a href='/auth/sign_out' data-method='delete'><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a></li>
+          </ul>
+
+          <p>
+            <FormattedMessage
+              id='getting_started.open_source_notice'
+              defaultMessage='Mastodon is open source software. You can contribute or report issues on GitHub at {github}.'
+              values={{ github: <span><a href='https://github.com/tootsuite/mastodon' rel='noopener' target='_blank'>tootsuite/mastodon</a> (v{version})</span> }}
+            />
+          </p>
         </div>
       </Column>
     );
