@@ -20,7 +20,7 @@ const Hashtag = ({ hashtag }) => (
     </div>
 
     <div className='trends__item__sparkline'>
-      <Sparklines width={50} height={28} data={hashtag.get('history').reverse().map(day => day.get('uses')).toArray()}>
+      <Sparklines width={50} height={28} data={hashtag.get('history') && hashtag.get('history').reverse().map(day => day.get('uses')).toArray()}>
         <SparklinesCurve style={{ fill: 'none' }} />
       </Sparklines>
     </div>
