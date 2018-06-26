@@ -2,6 +2,7 @@ const element = document.getElementById('initial-state');
 const initialState = element && JSON.parse(element.textContent);
 
 const getMeta = (prop) => initialState && initialState.meta && initialState.meta[prop];
+const getRight = (prop) => initialState && initialState.rights && initialState.rights[prop];
 
 export const reduceMotion = getMeta('reduce_motion');
 export const autoPlayGif = getMeta('auto_play_gif');
@@ -13,5 +14,7 @@ export const me = getMeta('me');
 export const searchEnabled = getMeta('search_enabled');
 export const invitesEnabled = getMeta('invites_enabled');
 export const maxChars = getMeta('max_toot_chars') || getMeta('char_limit') || 5000;
+
+export const deleteOthersNotice = getRight('delete_others_notice');
 
 export default initialState;

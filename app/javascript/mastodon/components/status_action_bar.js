@@ -5,7 +5,7 @@ import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { me } from '../initial_state';
+import { me, deleteOthersNotice } from '../initial_state';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -171,7 +171,9 @@ export default class StatusActionBar extends ImmutablePureComponent {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
-      menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
+      if ( deleteOthersNotice ) {
+        menu.push({ text: intl.formatMessage(messages.delete), action: this.handleDeleteClick });
+      }
     }
 
     if (status.get('visibility') === 'direct') {
