@@ -76,7 +76,7 @@ export default class Header extends ImmutablePureComponent {
   };
 
   openEditProfile = () => {
-    window.open('/settings/profile', '_blank');
+    window.open('/user-settings', '_blank');
   }
 
   render () {
