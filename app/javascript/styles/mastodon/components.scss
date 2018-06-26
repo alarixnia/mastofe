@@ -635,12 +635,29 @@
   font-size: 15px;
   line-height: 20px;
   word-wrap: break-word;
-  font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre-wrap;
   padding-top: 2px;
   color: $primary-text-color;
+
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  blockquote {
+    margin: .2em 0 .2em 2em;
+    font-style: italic;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
 
   &:focus {
     outline: 0;
