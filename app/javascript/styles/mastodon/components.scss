@@ -1419,6 +1419,7 @@ a.account__display-name {
 }
 
 .muted {
+  .status__content,
   .status__content p,
   .status__content a {
     color: $dark-text-color;
