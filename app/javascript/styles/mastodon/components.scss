@@ -2618,7 +2618,6 @@ a.status-card {
   }
 
   &__figure {
-    background: url('../images/elephant_ui_working.svg') no-repeat center 0;
     width: 100%;
     height: 160px;
     background-size: contain;
@@ -2630,10 +2629,6 @@ a.status-card {
 
   &.missing-indicator {
     padding-top: 20px + 48px;
-
-    .regeneration-indicator__figure {
-      background-image: url('../images/elephant_ui_disappointed.svg');
-    }
   }
 
   &__label {
@@ -3938,7 +3933,6 @@ a.status-card {
 }
 
 .onboarding-modal__page__wrapper-0 {
-  background: url('../images/elephant_ui_greeting.svg') no-repeat left bottom / auto 250px;
   height: 100%;
   padding: 0;
 }
