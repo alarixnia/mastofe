@@ -6,6 +6,15 @@ everything. This is my fork for the moment with the idea of making the mastofe
 just as polished as the pleromafe. If you want to get access, open an issue or
 hit me up at howl@social.zxq.co.
 
+# Deployement
+
+This is what you want to do to update the mastofe bundled with pleroma.
+
+- Run ``build.sh`` at the root of this repo, you can set the ``TARGET`` environment variable if pleroma isn’t at ``../pleroma`` (default value of ``TARGET``)
+- Go to pleroma repo:
+  - ``git add priv/static/sw.js priv/static/packs``
+  - ``git commit -m "update mastofe"``
+
 # Development
 
 I use a combination of the pleroma backend + yarn + nginx to do local
