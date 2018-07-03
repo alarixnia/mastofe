@@ -169,9 +169,13 @@ export default class GettingStarted extends ImmutablePureComponent {
 
           <p>
             <FormattedMessage
-              id='getting_started.open_source_notice'
-              defaultMessage='Mastodon is open source software. You can contribute or report issues on GitHub at {github}.'
-              values={{ github: <a href='https://github.com/tootsuite/mastodon' rel='noopener' target='_blank'>tootsuite/mastodon</a> }}
+              id='getting_started.mastofe_notice'
+              defaultMessage='{mastofe} is libre software based on {mastodon} frontend adapted for {pleroma}.'
+              values={{
+                mastofe: <a href='https://git.pleroma.social/pleroma/mastofe' rel='noopener' target='_blank'>Mastofe</a>,
+                mastodon: <a href='https://github.com/tootsuite/mastodon' rel='noopener' target='_blank'>Mastodon</a>,
+                pleroma: <a href='https://pleroma.social' rel='noopener' target='_blank'>Pleroma</a>
+              }}
             />
           </p>
         </div>
