@@ -6,8 +6,14 @@ $error-red: #df405a !default;        // Cerise
 $warning-red: #ff5050 !default;      // Sunset Orange
 $gold-star: #ca8f04 !default;        // Dark Goldenrod
 
+// Pleroma-Dark colors
+$pleroma-bg: #121a24;
+$pleroma-fg: #182230;
+$pleroma-text: #b9b9ba;
+$pleroma-links: #d8a070;
+
 // Values from the classic Mastodon UI
-$classic-base-color: #121a24;
+$classic-base-color: $pleroma-bg;
 $classic-primary-color: #9baec8;
 $classic-secondary-color: #d9e1e8;
 $classic-highlight-color: #d8a070;
