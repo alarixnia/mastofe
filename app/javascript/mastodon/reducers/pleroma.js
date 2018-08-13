@@ -11,7 +11,7 @@ export function custom_panel(state = initialPanel, action) {
   case PANEL_FETCH_SUCCESS:
     return state.set('panel', action.panel); break;
   case PLEROMA_CONFIG_FETCH_SUCCESS:
-    return state.set('enabled', (action.config || {}).showInstanceSpecificPanel || false);
+    return state.set('enabled', (action.config || {}).site.pleromafe.showInstanceSpecificPanel || false);
   }
 
   return state;
