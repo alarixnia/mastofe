@@ -38,7 +38,7 @@ export function fetchPleromaConfig() {
   return (dispatch, getState) => {
     dispatch(fetchPleromaConfigRequest());
 
-    api(getState).get('/static/config.json').then(response => {
+    api(getState).get('/api/statusnet/config.json').then(response => {
       dispatch(fetchPleromaConfigSuccess(response.data));
     }).catch(error => {
       dispatch(fetchPleromaConfigFail(error));
