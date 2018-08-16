@@ -1,0 +1,142 @@
+$ui-base-color: #181818; // darkest
+$ui-highlight-color: #1ea21e; // vibrant
+$ui-secondary-color: #E4F2E4; // lightest
+$ui-primary-color: #E4F2E4; // lighter
+$ui-primary-color-alt: #a0b49c; // darker, for external pages
+
+$about-page-text: lighten($ui-base-color, 50%);
+
+@import 'application';
+
+.muted {
+  .status__content p, .status__content a {
+    color: lighten($ui-base-color, 35%);
+  }
+
+  .status__display-name strong {
+    color: lighten($ui-base-color, 35%);
+  }
+}
+
+[data-whatinput="mouse"], [data-whatinput="touch"] {
+  .status__content:focus, .status:focus,
+  .status__wrapper:focus, .status__content__text:focus {
+    outline: none;
+  }
+}
+
+.compose-form__buttons button.active:last-child {
+  color:$ui-secondary-color;
+  background-color: $ui-highlight-color;
+  border-radius:3px;
+}
+
+.actions .button.button-alternative {
+    background: $ui-highlight-color;
+    color: $ui-primary-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: lighten($ui-highlight-color, 4%);
+    }
+}
+
+.activity-stream {
+  .status.light {
+    .status__header .status__meta .status__relative-time {
+      color: $ui-primary-color-alt;
+    }
+
+    .display-name span {
+      color: $ui-primary-color-alt;
+    }
+
+    .status__content {
+      a.status__content__spoiler-link {
+        background: $ui-primary-color-alt;
+
+        &:hover {
+          background: lighten($ui-primary-color-alt, 8%);
+        }
+      }
+    }
+  }
+
+  .detailed-status.light {
+    .detailed-status__display-name .display-name span {
+      color: $ui-primary-color-alt;
+    }
+
+    .status__content a.status__content__spoiler-link {
+      background: $ui-primary-color-alt;
+
+      &:hover {
+        background: lighten($ui-primary-color-alt, 8%);
+      }
+    }
+
+    .detailed-status__meta {
+      color: $ui-primary-color-alt;
+    }
+  }
+
+  .media-spoiler {
+    background: $ui-primary-color-alt;
+    &:hover {
+      background: darken($ui-primary-color-alt, 5%);
+    }
+  }
+
+  .pre-header {
+    color: $ui-primary-color-alt;
+    .status__display-name.muted strong {
+      color: $ui-primary-color-alt;
+    }
+  }
+}
+
+.embed .activity-stream .entry .detailed-status.light .button.button-secondary.logo-button {
+  color: $ui-primary-color-alt;
+  svg {
+    path:first-child {
+      fill: $ui-primary-color-alt;
+    }
+  }
+  &:active,
+  &:focus,
+  &:hover {
+    svg path:first-child {
+      fill: lighten($ui-primary-color-alt, 4%);
+    }
+  }
+}
+
+
+.emoji-mart-search {
+  background: $simple-background-color;
+  input {
+    color: $ui-primary-color-alt;
+    border: 1px solid $ui-primary-color-alt;
+  }
+}
+
+.emoji-mart-anchor {
+  color: $ui-primary-color-alt;
+  &:hover {
+    color: darken($ui-primary-color-alt, 8%);
+  }
+}
+
+.search-popout {
+  background: $ui-base-color;
+  color: $ui-primary-color;
+
+  h4 {
+    color: $ui-primary-color;
+  }
+
+  em {
+    color: $ui-highlight-color;
+  }
+}
