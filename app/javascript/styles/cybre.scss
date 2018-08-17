@@ -3,8 +3,7 @@ $ui-highlight-color: #1ea21e; // vibrant
 $ui-secondary-color: #E4F2E4; // lightest
 $ui-primary-color: #E4F2E4; // lighter
 $ui-primary-color-alt: #a0b49c; // darker, for external pages
-
-$about-page-text: lighten($ui-base-color, 50%);
+$pleroma-links: #70d8a0;
 
 @import 'application';
 
@@ -139,4 +138,8 @@ $about-page-text: lighten($ui-base-color, 50%);
   em {
     color: $ui-highlight-color;
   }
+}
+
+@mixin avatar-radius() {
+  border-radius: 3px !important;
 }
