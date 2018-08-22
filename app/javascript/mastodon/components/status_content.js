@@ -57,7 +57,12 @@ export default class StatusContent extends React.PureComponent {
       link.setAttribute('rel', 'noopener');
     }
 
-    if (this.props.collapsable && this.state.collapsed === null && node.clientHeight > 200) this.setState({ collapsed: true });
+    if (
+      this.props.collapsable
+      && this.state.collapsed === null
+      && node.clientHeight > 200
+      && this.props.status.get('spoiler_text').length === 0
+    ) this.setState({ collapsed: true });
   }
 
   componentDidMount () {
@@ -190,13 +195,13 @@ export default class StatusContent extends React.PureComponent {
         >
           <div dangerouslySetInnerHTML={content} />
           {this.state.collapsed !== null ?
-            <a
-              className="status__content__collapse-button"
+            <button
+              className='status__content__collapse-button'
               onClick={this.handleCollapsedClick}
             >
               <i className='fa fa-fw fa-angle-double-down' />
-            </a>
-          : null}
+            </button>
+            : null}
         </div>
       );
     } else {
