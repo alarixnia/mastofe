@@ -154,7 +154,6 @@ class Item extends React.PureComponent {
             aria-label={attachment.get('description')}
             role='application'
             src={attachment.get('url')}
-            loop
             controls
           />
         </div>
