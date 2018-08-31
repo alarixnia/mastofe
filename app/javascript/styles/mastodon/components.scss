@@ -4382,6 +4382,14 @@ a.status-card {
   }
 }
 
+.media-gallery__audio {
+  margin-top: 32px;
+
+  audio {
+    width: 100%;
+  }
+}
+
 .attachment-list {
   display: flex;
   font-size: 14px;
