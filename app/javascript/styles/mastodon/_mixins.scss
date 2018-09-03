@@ -1,15 +1,8 @@
 @mixin avatar-radius() {
-  border-radius: 50%;
+  border-radius: 4px;
   background: transparent no-repeat;
   background-position: 50%;
   background-clip: padding-box;
-  -moz-transition: all 300ms;
-  -o-transition: all 300ms;
-  -webkit-transition: all 300ms;
-  transition: all 300ms;
-  &:hover {
-    border-radius: 10%;
-  }
 }
 
 @mixin avatar-size($size:48px) {

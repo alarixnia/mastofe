@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import IconButton from '../../../components/icon_button';
+import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { autoPlayGif, me } from '../../../initial_state';
@@ -41,20 +42,24 @@ class Avatar extends ImmutablePureComponent {
     const { isHovered } = this.state;
 
     return (
-      <a
-        href={account.get('url')}
-        className='account__header__avatar'
-        role='presentation'
-        target='_blank'
-        rel='noopener'
-        style={{ backgroundImage: `url(${autoPlayGif || isHovered ? account.get('avatar') : account.get('avatar_static')})` }}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        onFocus={this.handleMouseOver}
-        onBlur={this.handleMouseOut}
-      >
-        <span style={{ display: 'none' }}>{account.get('acct')}</span>
-      </a>
+      <Motion defaultStyle={{ radius: 90 }} style={{ radius: spring(isHovered ? 30 : 90, { stiffness: 180, damping: 12 }) }}>
+        {({ radius }) => (
+          <a
+            href={account.get('url')}
+            className='account__header__avatar'
+            role='presentation'
+            target='_blank'
+            rel='noopener'
+            style={{ borderRadius: `${radius}px`, backgroundImage: `url(${autoPlayGif || isHovered ? account.get('avatar') : account.get('avatar_static')})` }}
+            onMouseOver={this.handleMouseOver}
+            onMouseOut={this.handleMouseOut}
+            onFocus={this.handleMouseOver}
+            onBlur={this.handleMouseOut}
+          >
+            <span style={{ display: 'none' }}>{account.get('acct')}</span>
+          </a>
+        )}
+      </Motion>
     );
   }
 
