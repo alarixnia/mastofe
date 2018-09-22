@@ -17,3 +17,9 @@
     max-height: 235px;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .account-header {
+    margin-top: 0;
+  }
+}

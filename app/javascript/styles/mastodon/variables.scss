@@ -6,11 +6,11 @@ $error-red: #df405a !default;        // Cerise
 $warning-red: #ff5050 !default;      // Sunset Orange
 $gold-star: #ca8f04 !default;        // Dark Goldenrod
 
-// Catgirl Science colors
-$pleroma-bg: #111111;
-$pleroma-fg: #212121;
-$pleroma-text: #cccccc;
-$pleroma-links: #70d8a0;
+// Pleroma-Dark colors
+$pleroma-bg: #121a24;
+$pleroma-fg: #182230;
+$pleroma-text: #b9b9ba;
+$pleroma-links: #d8a070;
 
 // Values from the classic Mastodon UI
 $classic-base-color: $pleroma-bg;
@@ -52,3 +52,5 @@ $cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;
 $media-modal-media-max-width: 100%;
 // put margins on top and bottom of image to avoid the screen covered by image.
 $media-modal-media-max-height: 80%;
+
+$no-gap-breakpoint: 415px;

@@ -26,6 +26,7 @@ import height_cache from './height_cache';
 import custom_emojis from './custom_emojis';
 import lists from './lists';
 import listEditor from './list_editor';
+import filters from './filters';
 import { custom_panel } from './pleroma';
 
 const reducers = {
@@ -56,6 +57,7 @@ const reducers = {
   custom_emojis,
   lists,
   listEditor,
+  filters,
   custom_panel,
 };
 

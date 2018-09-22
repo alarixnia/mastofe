@@ -32,6 +32,7 @@ const messages = defineMessages({
   discover: { id: 'navigation_bar.discover', defaultMessage: 'Discover' },
   personal: { id: 'navigation_bar.personal', defaultMessage: 'Personal' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
+  menu: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
 });
 
 const mapStateToProps = state => ({
@@ -91,7 +92,7 @@ export default class GettingStarted extends ImmutablePureComponent {
 
     const navItems = [];
     let i = 1;
-    let height = 0;
+    let height = (multiColumn) ? 0 : 60;
 
     if (multiColumn) {
       navItems.push(
@@ -123,7 +124,7 @@ export default class GettingStarted extends ImmutablePureComponent {
         <ColumnLink key={i++} icon='gears' text={intl.formatMessage(messages.preferences)} href='/user-settings' />,
       );
 
-      height += 34 + 48*2;
+      height += 34 + 48;
     }
 
     const dot = ' • ';
@@ -140,7 +141,7 @@ export default class GettingStarted extends ImmutablePureComponent {
     );
 
     return (
-      <Column>
+      <Column label={intl.formatMessage(messages.menu)}>
         {multiColumn && <div className='column-header__wrapper'>
           <h1 className='column-header'>
             <button>
@@ -150,23 +151,25 @@ export default class GettingStarted extends ImmutablePureComponent {
           </h1>
         </div>}
 
-        <div className='getting-started getting-started__wrapper scrollable'>
+        <div className='getting-started__wrapper scrollable' style={{ height }}>
           {!multiColumn && <NavigationBar account={myAccount} />}
           {navItems}
         </div>
+
+        {!multiColumn && <div className='flex-spacer' />}
 
         <div className='getting-started getting-started__panel scrollable'>
           {staticContent}
         </div>
 
-        <div className='getting-started getting-started__footer scrollable'>
-          {(invitesEnabled || multiColumn) &&
-            <ul>
-              {invitesEnabled && <li><a href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a></li>}
-              {multiColumn && <li><Link to='/keyboard-shortcuts'><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></Link></li>}
-            </ul>
-          }
+        {!multiColumn && <div className='flex-spacer' />}
 
+        <div className='getting-started__footer scrollable'>
+          <ul>
+            {invitesEnabled && <li><a href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
+            {multiColumn && <li><Link to='/keyboard-shortcuts'><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></Link> · </li>}
+            <li><a href='/auth/sign_out' data-method='delete'><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a></li>
+          </ul>
           <p>
             <FormattedMessage
               id='getting_started.mastofe_notice'

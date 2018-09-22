@@ -1,10 +1,13 @@
 #!/bin/sh
 TARGET="../pleroma" # Where pleroma’s repository is sitting
 
-yarn install -D
+yarn install
 
 rm -rf public/packs public/assets
 env -i "PATH=$PATH" npm run build
-cp public/assets/sw.js "${TARGET}/priv/static/sw.js"
-rm -rf "${TARGET}/priv/static/packs"
-cp -r public/packs "${TARGET}/priv/static/packs"
+for asset in sw.js packs sounds
+do
+	rm -rf "${TARGET}/priv/static/${asset}"
+	cp -r "public/${asset}" "${TARGET}/priv/static/${asset}"
+done
+rsync -ra "public/emoji/" "${TARGET}/priv/static/emoji"
