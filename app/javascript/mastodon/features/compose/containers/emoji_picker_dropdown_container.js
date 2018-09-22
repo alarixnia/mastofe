@@ -9,22 +9,22 @@ const perLine = 8;
 const lines   = 2;
 
 const DEFAULTS = [
-  '+1',
-  'grinning',
-  'kissing_heart',
-  'heart_eyes',
-  'laughing',
-  'stuck_out_tongue_winking_eye',
-  'sweat_smile',
-  'joy',
-  'yum',
-  'disappointed',
-  'thinking_face',
-  'weary',
-  'sob',
-  'sunglasses',
-  'heart',
-  'ok_hand',
+  'blobowo',
+  'blobaww',
+  'blobheart',
+  'blobsleeping',
+  'gCatAngry',
+  'gCatCrying',
+  'gCatFace',
+  'gCatKiss',
+  'gCatLove',
+  'kagerouWha',
+  'kagerouYum',
+  'purple_heart',
+  'eyes',
+  'link',
+  'thinknyan',
+  'thaenkin'
 ];
 
 const getFrequentlyUsedEmojis = createSelector([
